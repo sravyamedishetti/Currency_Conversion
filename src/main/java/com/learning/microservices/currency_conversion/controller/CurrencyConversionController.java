@@ -1,6 +1,7 @@
 package com.learning.microservices.currency_conversion.controller;
 
 import com.learning.microservices.currency_conversion.bean.CurrencyConversion;
+import com.learning.microservices.currency_conversion.proxy.CurrencyExchangeProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class CurrencyConversionController {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private CurrencyExchangeProxy currencyExchangeProxy;
+
 
     @GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
     public CurrencyConversion getCurrencyConversion(@PathVariable String from, @PathVariable String to, @PathVariable String quantity){
@@ -34,6 +38,18 @@ public class CurrencyConversionController {
         CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)));
         String port = environment.getProperty("local.server.port");
         currencyConversion.setEnvironment(port);
+        return currencyConversion1;
+    }
+
+
+    @GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
+    public CurrencyConversion getCurrencyConversionUsingFeign(@PathVariable String from, @PathVariable String to, @PathVariable String quantity){
+
+       CurrencyConversion currencyConversion = currencyExchangeProxy.retrieveExchangeValue(from, to);
+
+        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)));
+        String port = environment.getProperty("local.server.port");
+        currencyConversion1.setEnvironment(port+" "+"feign");
         return currencyConversion1;
     }
 
