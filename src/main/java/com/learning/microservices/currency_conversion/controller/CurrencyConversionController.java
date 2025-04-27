@@ -35,9 +35,9 @@ public class CurrencyConversionController {
 
         CurrencyConversion currencyConversion = result.getBody();
 
-        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)));
+        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)),"");
         String port = environment.getProperty("local.server.port");
-        currencyConversion.setEnvironment(port);
+        currencyConversion1.setEnvironment(port);
         return currencyConversion1;
     }
 
@@ -47,9 +47,9 @@ public class CurrencyConversionController {
 
        CurrencyConversion currencyConversion = currencyExchangeProxy.retrieveExchangeValue(from, to);
 
-        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)));
-        String port = environment.getProperty("local.server.port");
-        currencyConversion1.setEnvironment(port+" "+"feign");
+        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)), currencyConversion.getEnvironment());
+        //String port = environment.getProperty("local.server.port");
+        //currencyConversion1.getEnvironment();
         return currencyConversion1;
     }
 
