@@ -47,7 +47,7 @@ public class CurrencyConversionController {
 
        CurrencyConversion currencyConversion = currencyExchangeProxy.retrieveExchangeValue(from, to);
 
-        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)), currencyConversion.getEnvironment());
+        CurrencyConversion currencyConversion1 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity), currencyConversion.getConversionMultiple().multiply(new BigDecimal(quantity)), currencyConversion.getEnvironment()+"feign");
         //String port = environment.getProperty("local.server.port");
         //currencyConversion1.getEnvironment();
         return currencyConversion1;
